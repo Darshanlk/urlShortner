@@ -1,15 +1,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const ShortUrl = require("./models/shortUrl");
+const qr = require("qrcode");
 
 const app = express();
 
 console.log(process.env.PORT);
-if(process.env.NODE_ENV !== "production") {
-    require('dotenv').config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 
-mongoose.connect(process.env.MONGO_URL, {
+mongoose
+  .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
   })
   .then(() => console.log("Database connected!"))
@@ -27,7 +29,20 @@ app.get("/", async (req, res) => {
 
 app.post("/shortUrls", async (req, res) => {
   const url = req.body.fullurl;
-  const data = await ShortUrl.create({ full: url });
+
+  // qr.toDataURL(url, async (err, src) => {
+  //   if (err) res.send("Error occured");
+  //   console.log(src)
+
+  // });
+
+  let src = await qr.toDataURL(url);
+console.log
+
+  console.log(src,"src---------------------------------------------------------------");
+
+
+  const data = await (await ShortUrl.create({ full: url, qrcode: src })).save()
   console.log(data);
 
   res.redirect("/");
@@ -44,4 +59,4 @@ app.get("/:shortUrl", async (req, res) => {
 
   res.redirect(shortUrl.full);
 });
-app.listen(process.env.PORT || 5000);
+app.listen(5000);

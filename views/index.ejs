@@ -26,14 +26,19 @@
         <table class="table table-striped table-responsive">
             <thead>
                 <tr>
+                    <th>Index</th>
                     <th>Full URL</th>
                     <th>Short URL</th>
                     <th>Clicks</th>
+                    <th>Qr Code</th>
                 </tr>
             </thead>
             <tbody>
-                <% shortUrls.forEach(shortUrl=> { %>
+                <% shortUrls.forEach((shortUrl,index)=> { %>
                     <tr>
+                        <td>
+                            <%=index %>
+                        </td>
                         <td><a href="<%= shortUrl.full %>">
                                 <%= shortUrl.full %>
                             </a></td>
@@ -43,9 +48,42 @@
                         <td>
                             <%= shortUrl.clicks %>
                         </td>
+                        <td>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal<%= shortUrl.short %>">
+                                Qr-code</button>
+                            <div class="modal" id="myModal<%=shortUrl.short %>">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">QR CODE </h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+
+                                            <img src="<%=shortUrl.qrcode%>"/>
+
+
+                                            <p> Scane me</p>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                    data-bs-dismiss="modal">Close</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                        </td>
                     </tr>
 
                     <% }) %>
+
 
             </tbody>
         </table>
