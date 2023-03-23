@@ -37,13 +37,13 @@ app.post("/shortUrls", async (req, res) => {
   // });
 
   let src = await qr.toDataURL(url);
-console.log
 
-  console.log(src,"src---------------------------------------------------------------");
+
+  // console.log(src,"src---------------------------------------------------------------");
 
 
   const data = await (await ShortUrl.create({ full: url, qrcode: src })).save()
-  console.log(data);
+  // console.log(data);
 
   res.redirect("/");
 });
