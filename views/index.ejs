@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div class="container p-5 shadow p-3 mt-5 mb-5 rounded" style="background-color: rgb(210, 228, 245)" >
+    <div class="container p-5 shadow p-3 mt-5 mb-5 rounded" style="background-color: rgb(210, 228, 245)">
         <h1 class="mt-5">URL Shrinker</h1>
         <form action="/shortUrls" method="post" class="my-4 form-check-inline">
             <!-- <label for="fullurl">URL</label> -->
@@ -26,19 +26,17 @@
         <table class="table table-striped table-responsive ">
             <thead>
                 <tr>
-                    <th>Index</th>
+                  
                     <th>Full URL</th>
                     <th>Short URL</th>
                     <th>Clicks</th>
                     <th>Qr Code</th>
                 </tr>
             </thead>
-            <tbody >
-                <% shortUrls.forEach((shortUrl,index)=> { %>
+            <tbody>
+                <% shortUrls.forEach((shortUrl)=> { %>
                     <tr>
-                        <td>
-                            <%=index %>
-                        </td>
+                        
                         <td><a href="<%= shortUrl.full %>">
                                 <%= shortUrl.full %>
                             </a></td>
@@ -49,7 +47,8 @@
                             <%= shortUrl.clicks %>
                         </td>
                         <td>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal<%= shortUrl.short %>">
+                            <button class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#myModal<%= shortUrl.short %>">
                                 Qr-code</button>
                             <div class="modal" id="myModal<%=shortUrl.short %>">
                                 <div class="modal-dialog">
@@ -64,7 +63,7 @@
                                         <!-- Modal body -->
                                         <div class="modal-body">
 
-                                            <img src="<%=shortUrl.qrcode%>"/>
+                                            <img src="<%=shortUrl.qrcode%>" style="margin-left: 150px;" />
 
 
                                             <p> Scan me</p>
@@ -87,6 +86,28 @@
 
             </tbody>
         </table>
+        <!-- <h1>Hello <%= pages %>!</h1> -->
+        <div class="align-content-center">
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <!-- <li class="page-item active" aria-current="page">
+                    <span class="page-link">2</span>
+                  </li> -->
+
+
+                    <% for (var i=1 ; i < pages+1 ;i++){ %>
+
+
+
+                        <li class="page-item"><a class="page-link <%=  currentPage == i && " active" %> "
+                                aria-current="page" href="<%= `/?page=${i}` %>"> <%= i %></a></li>
+                        <% } %>
+
+
+                </ul>
+            </nav>
+        </div>
+
     </div>
 </body>
 

@@ -23,8 +23,18 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", async (req, res) => {
-  const shortUrls = await ShortUrl.find();
-  res.render("index", { shortUrls: shortUrls });
+  let page = req.query.page;
+  if (page < 1) {
+    page = 1;
+  }
+  const shortUrls = await ShortUrl.find()
+    .skip(5 * Number(page) - 5)
+    .limit(5);
+  // console.log(shortUrls)
+  const data = await ShortUrl.find().count();
+  const pagesLength = Math.ceil(data / 5);
+  const currentPage = req.query.page
+  res.render("index", { shortUrls: shortUrls, pages: pagesLength, currentPage  });
 });
 
 app.post("/shortUrls", async (req, res) => {
@@ -38,11 +48,9 @@ app.post("/shortUrls", async (req, res) => {
 
   let src = await qr.toDataURL(url);
 
-
   // console.log(src,"src---------------------------------------------------------------");
 
-
-  const data = await (await ShortUrl.create({ full: url, qrcode: src })).save()
+  const data = await (await ShortUrl.create({ full: url, qrcode: src })).save();
   // console.log(data);
 
   res.redirect("/");
